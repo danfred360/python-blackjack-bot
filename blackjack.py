@@ -4,6 +4,7 @@ Date: October 30, 2018
 --------------------------------------------------------------------------------------------------
 Still need to add:
 - remove user's hidden card from used array visible to Computer
+- check to make sure user only enters 1 or 11 for ace
 '''
 
 import random
@@ -162,7 +163,12 @@ class Game:
         x = 0
         if card == 'Ace':
             if p == 'user':
-                j = int(input('Would you like this ace to be worth 1 or 11? --> '))
+                while True:
+                    j = int(input('Would you like this ace to be worth 1 or 11? --> '))
+                    if j == 1 or j == 11:
+                        break
+                    else:
+                        print('Sorry try again.')
                 self.rem[10] = self.rem[9] - 1
                 self.rem[0] = self.rem[0] - 1
                 return j
