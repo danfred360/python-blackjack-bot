@@ -4,10 +4,7 @@ Date: October 30, 2018
 --------------------------------------------------------------------------------------------------
 Still need to add:
 - remove user's hidden card from used array visible to Computer
-- add support for ace to be 1 OR 11
 - check to make sure user only inputs hit or stay
-- check score after initial hand
-- add tie option
 '''
 
 import random
@@ -26,6 +23,25 @@ class Game:
         self.cvalue = 0
         self.chand = [self.newCard('computer'), self.newCard('computer', False)]
 
+        #check to see if anyone one off the bat
+        if self.value == 21:
+            print('You hit blackjack!')
+            x = input('\nPress any key to exit --> ')
+            exit()
+        if self.value > 21:
+            print('You busted!')
+            x = input('\nPress any key to exit --> ')
+            exit()
+
+        if self.cvalue == 21:
+            print('Computer hit blackjack! You lose.')
+            x = input('\nPress any key to exit --> ')
+            exit()
+        if self.cvalue > 21:
+            print('Computer busted! You win.')
+            x = input('\nPress any key to exit --> ')
+            exit()
+
         r = self.run()
         if r == 7:
             if self.value > self.cvalue:
@@ -34,6 +50,10 @@ class Game:
                 exit()
             elif self.value < self.cvalue:
                 print('The computer was closer to 21. You lose!')
+                x = input('\nPress any key to exit --> ')
+                exit()
+            elif self.value == self.cvalue:
+                print('You tied!')
                 x = input('\nPress any key to exit --> ')
                 exit()
         else:
