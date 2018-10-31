@@ -4,10 +4,11 @@ Date: October 30, 2018
 --------------------------------------------------------------------------------------------------
 Still need to add:
 - remove user's hidden card from used array visible to Computer
-- don't print cards added to computer's hand
 - add support for ace to be 1 OR 11
+- let computer choose 1 or 11 for ace
 - check to make sure user only inputs hit or stay
 - check score after initial hand
+- add tie option
 '''
 
 import random
@@ -23,7 +24,7 @@ class Game:
         self.hand = [self.newCard('user'), self.newCard('user')]
         #establishes computer's hand
         self.cvalue = 0
-        self.chand = [self.newCard('computer'), self.newCard('computer')]
+        self.chand = [self.newCard('computer'), self.newCard('computer', False)]
 
         r = self.run()
         if r == 7:
@@ -107,7 +108,7 @@ class Game:
             return 'hit'
 
     #adds a new card to player's hand 'user' for human 'computer' for computer
-    def newCard(self, player):
+    def newCard(self, player, p=True):
         while True:
             c = self.cards[random.randint(0, 11)]
             s = self.suits[random.randint(0,3)]
@@ -116,20 +117,29 @@ class Game:
                 i = self.used.index(card)
             except ValueError:
                 self.used.append(card)
-                print('Add ' + card + ' to ' + player + "'s hand.")
+                if p == True:
+                    print('Add ' + card + ' to ' + player + "'s hand.")
                 if player == 'user':
                     self.value += self.valueCard(c)
                 if player == 'computer':
-                    self.cvalue += self.valueCard(c)
+                    self.cvalue += self.valueCard(c, player)
                 break
         return card
 
-    def valueCard(self, card):
+    def valueCard(self, card,p='user'):
         x = 0
         if card == 'Ace':
-            j = input('Would you like this ace to be worth 1 or 11? --> ')
-            self.rem[9] = self.rem[9] - 1
-            return int(j)
+            if p == 'user':
+                j = input('Would you like this ace to be worth 1 or 11? --> ')
+                self.rem[9] = self.rem[9] - 1
+                return int(j)
+            if p == 'computer':
+                dif = 21 - self.cvalue
+                if dif >= 11:
+                    self.rem[9] = self.rem[9] - 1
+                    return 11
+                else:
+                    return 1
         elif card == 'Jack' or card == 'Queen' or card == 'King' or card == '10':
             self.rem[8] = self.rem[8] - 1
             return 10
