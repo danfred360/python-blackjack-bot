@@ -4,7 +4,6 @@ Date: October 30, 2018
 --------------------------------------------------------------------------------------------------
 Still need to add:
 - remove user's hidden card from used array visible to Computer
-- check to make sure user only inputs hit or stay
 '''
 
 import random
@@ -183,5 +182,4 @@ class Game:
         else:
             self.rem[int(card) - 2] = self.rem[int(card) - 2] - 1
             return int(card)
-
 temp = Game()
