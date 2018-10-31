@@ -73,7 +73,7 @@ class Game:
             if stay == False:
                 print('\nYour turn... ')
                 print('\nYour hand is valued at ' + str(self.value) + '.')
-                hit = input('Hit or stay --> ')
+                hit = self.dec()
                 if hit == 'hit':
                     self.hand.append(self.newCard('user'))
                     if self.value == 21:
@@ -104,6 +104,15 @@ class Game:
 
             if stay == True and cstay == True:
                 return 7
+
+    #gets player's decision to hit or stay, checks input
+    def dec(self):
+        while True:
+            x = input("Hit or stay --> ")
+            if x == 'hit' or x == 'stay':
+                return x
+            else:
+                print('Sorry, try again.')
 
 
     #returns an array of percentage chance of drawing a card worth [2,3,4,5,6,7,8,9,10,11]
