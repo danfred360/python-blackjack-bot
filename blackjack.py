@@ -4,11 +4,13 @@ Date: October 30, 2018
 --------------------------------------------------------------------------------------------------
 Still need to add:
 - remove user's hidden card from used array visible to Computer
+- don't print cards added to computer's hand
 - add support for ace to be 1 OR 11
-- finish computer's turn
+- check to make sure user only inputs hit or stay
+- check score after initial hand
 '''
 
-#remove my hidden card from computer's used array
+import random
 class Game:
     def __init__(self):
         self.suits = ['Hearts', 'Spades', 'Clubs', 'Diamonds']
@@ -18,15 +20,15 @@ class Game:
         self.rem = [4,4,4,4,4,4,4,4,16,4]
         #establish player's hand
         self.value = 0
-        self.hand = [self.newCard(), self.newCard()]
+        self.hand = [self.newCard('user'), self.newCard('user')]
         #establishes computer's hand
         self.cvalue = 0
-        self.chand = [self.newCard(), self.newCard()]
+        self.chand = [self.newCard('computer'), self.newCard('computer')]
 
         r = self.run()
         if r == 7:
             if self.value > self.cvalue:
-                print('You were colser to 21. You win!')
+                print('You were closer to 21. You win!')
                 x = input('Press any key to exit --> ')
                 exit()
             elif self.value < self.cvalue:
@@ -79,7 +81,7 @@ class Game:
                         print('Computer busted')
                         return 6
 
-                if stay == False and cstay == False:
+                if stay == True and cstay == True:
                     return 7
 
 
@@ -87,7 +89,7 @@ class Game:
     def getChances(self):
         ans = []
         for i in range(0,9):
-            ans.append(float(self.rem[i]) / float(52 - len(self.used))
+            ans.append(float(self.rem[i]) / float(52 - len(self.used)))
         return ans
 
     def choose(self):
@@ -97,17 +99,18 @@ class Game:
         prob = self.getChances()
         #chances of going over (drawing a card with a value larger than dif)
         bad = 0
-        for i in range(int(dif),11):
-            bad += prob(i)
+        for i in range(int(dif),10):
+            bad += prob[i - 1]
         if bad > .5:
             return 'stay'
-        else return 'hit'
+        else:
+            return 'hit'
 
     #adds a new card to player's hand 'user' for human 'computer' for computer
     def newCard(self, player):
         while True:
-            c = cards[random.randint(0, 11)]
-            s = suits[random.randint(0,3)]
+            c = self.cards[random.randint(0, 11)]
+            s = self.suits[random.randint(0,3)]
             card = c + ' of ' + s
             try:
                 i = self.used.index(card)
@@ -125,11 +128,13 @@ class Game:
         x = 0
         if card == 'Ace':
             j = input('Would you like this ace to be worth 1 or 11? --> ')
-            self.rem[10] = self.rem[10] - 1
+            self.rem[9] = self.rem[9] - 1
             return int(j)
         elif card == 'Jack' or card == 'Queen' or card == 'King' or card == '10':
-            self.rem[9] = self.rem[9] - 1
+            self.rem[8] = self.rem[8] - 1
             return 10
         else:
             self.rem[int(card) - 2] = self.rem[int(card) - 2] - 1
             return int(card)
+
+temp = Game()
