@@ -70,20 +70,20 @@ class Game:
                 if cstay == False:
                     print("Computer's turn... ")
                     choice = self.choose()
-                if choice == 'stay':
-                    print('Computer chose to stay')
-                    cstay = True
-                if choice == 'hit':
-                    self.chand.append(self.newCard('computer'))
-                    if self.cvalue == 21:
-                        print('Computer hit blackjack!')
-                        return 5
-                    if self.cvalue > 21:
-                        print('Computer busted')
-                        return 6
+                    if choice == 'stay':
+                        print('Computer chose to stay')
+                        cstay = True
+                    if choice == 'hit':
+                        self.chand.append(self.newCard('computer'))
+                        if self.cvalue == 21:
+                            print('Computer hit blackjack!')
+                            return 5
+                        if self.cvalue > 21:
+                            print('Computer busted')
+                            return 6
 
-                if stay == True and cstay == True:
-                    return 7
+                    if stay == True and cstay == True:
+                        return 7
 
 
     #returns an array of percentage chance of drawing a card worth [2,3,4,5,6,7,8,9,10,11]
