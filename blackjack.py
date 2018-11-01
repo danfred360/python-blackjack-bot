@@ -8,22 +8,24 @@ Still need to add:
 '''
 
 import random
+
+
 class Game:
     def __init__(self):
         self.suits = ['Hearts', 'Spades', 'Clubs', 'Diamonds']
         self.cards = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King']
-        #intitializes array of cards that have been played
+        # intitializes array of cards that have been played
         self.used = []
         #          [1,2,3,4,5,6,7,8,9,10,11]
-        self.rem = [4,4,4,4,4,4,4,4,4,16,4]
-        #establish player's hand
+        self.rem = [4, 4, 4, 4, 4, 4, 4, 4, 4, 16, 4]
+        # establish player's hand
         self.value = 0
         self.hand = [self.newCard('user'), self.newCard('user')]
-        #establishes computer's hand
+        # establishes computer's hand
         self.cvalue = 0
         self.chand = [self.newCard('computer'), self.newCard('computer', False)]
 
-        #check to see if anyone one off the bat
+        # check to see if anyone one off the bat
         if self.value == 21:
             print('You hit blackjack!')
             x = input('\nPress any key to exit --> ')
@@ -60,7 +62,7 @@ class Game:
             x = input('\nPress any key to exit --> ')
             exit()
 
-    #returns 1 if you get blackjack, 2 if you lose
+    # returns 1 if you get blackjack, 2 if you lose
     # 5 if computer gets blackjack, and 6 if computer busts
     # 7 if you both stay
     def run(self):
@@ -69,8 +71,8 @@ class Game:
         stay = False
         cstay = False
         while True:
-            #your turn
-            if stay == False:
+            # your turn
+            if not stay:
                 print('\nYour turn... ')
                 print('\nYour hand is valued at ' + str(self.value) + '.')
                 hit = self.dec()
@@ -87,8 +89,8 @@ class Game:
                     print('Your final score is ' + str(self.value) + '.')
                     stay = True
 
-            #computer's turn
-            if cstay == False:
+            # computer's turn
+            if not cstay:
                 print("\nComputer's turn... ")
                 choice = self.choose()
                 if choice == 'stay':
@@ -102,10 +104,10 @@ class Game:
                         print('Computer busted')
                         return 6
 
-            if stay == True and cstay == True:
+            if stay and cstay:
                 return 7
 
-    #gets player's decision to hit or stay, checks input
+    # gets player's decision to hit or stay, checks input
     def dec(self):
         while True:
             x = input("Hit or stay --> ")
@@ -114,11 +116,11 @@ class Game:
             else:
                 print('Sorry, try again.')
 
+    # returns an array of percentage chance of drawing a card worth [2,3,4,5,6,7,8,9,10,11]
 
-    #returns an array of percentage chance of drawing a card worth [2,3,4,5,6,7,8,9,10,11]
     def getChances(self):
         ans = []
-        for i in range(0,10):
+        for i in range(0, 10):
             ans.append(float(self.rem[i]) / float(52 - len(self.used)))
         return ans
 
@@ -127,11 +129,11 @@ class Game:
         if dif >= 11:
             print('Computer hits.')
             return 'hit'
-            #self.chand.append(self.newCard('computer'))
+            # self.chand.append(self.newCard('computer'))
         prob = self.getChances()
-        #chances of going over (drawing a card with a value larger than dif)
+        # chances of going over (drawing a card with a value larger than dif)
         bad = 0
-        for i in range(int(dif),10):
+        for i in range(int(dif), 10):
             bad += prob[i - 1]
         if bad > .5:
             print('Computer stays.')
@@ -140,17 +142,17 @@ class Game:
             print('Computer hits.')
             return 'hit'
 
-    #adds a new card to player's hand 'user' for human 'computer' for computer
+    # adds a new card to player's hand 'user' for human 'computer' for computer
     def newCard(self, player, p=True):
         while True:
             c = self.cards[random.randint(0, 11)]
-            s = self.suits[random.randint(0,3)]
+            s = self.suits[random.randint(0, 3)]
             card = c + ' of ' + s
             try:
                 i = self.used.index(card)
             except ValueError:
                 self.used.append(card)
-                if p == True:
+                if p:
                     print('Add ' + card + ' to ' + player + "'s hand.")
                 if player == 'user':
                     self.value += self.valueCard(c)
@@ -159,8 +161,7 @@ class Game:
                 break
         return card
 
-    def valueCard(self, card,p='user'):
-        x = 0
+    def valueCard(self, card, p='user'):
         if card == 'Ace':
             if p == 'user':
                 j = int(input('Would you like this ace to be worth 1 or 11? --> '))
@@ -183,5 +184,6 @@ class Game:
         else:
             self.rem[int(card) - 2] = self.rem[int(card) - 2] - 1
             return int(card)
+
 
 temp = Game()
