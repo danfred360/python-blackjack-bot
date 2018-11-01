@@ -4,7 +4,6 @@ Date: October 30, 2018
 --------------------------------------------------------------------------------------------------
 Still need to add:
 - remove user's hidden card from used array visible to Computer
-- check to make sure user only enters 1 or 11 for ace
 '''
 
 import random
@@ -22,7 +21,6 @@ class Game:
         #establishes computer's hand
         self.cvalue = 0
         self.chand = [self.newCard('computer'), self.newCard('computer', False)]
-
         #check to see if anyone one off the bat
         if self.value == 21:
             print('You hit blackjack!')
@@ -45,14 +43,17 @@ class Game:
         r = self.run()
         if r == 7:
             if self.value > self.cvalue:
+                print("The computer's score was " + self.cvalue + '.')
                 print('You were closer to 21. You win!')
                 x = input('\nPress any key to exit --> ')
                 exit()
             elif self.value < self.cvalue:
+                print("The computer's score was " + self.cvalue + '.')
                 print('The computer was closer to 21. You lose!')
                 x = input('\nPress any key to exit --> ')
                 exit()
             elif self.value == self.cvalue:
+                print("The computer's score was " + self.cvalue + '.')
                 print('You tied!')
                 x = input('\nPress any key to exit --> ')
                 exit()
@@ -164,14 +165,14 @@ class Game:
         if card == 'Ace':
             if p == 'user':
                 while True:
-                    j = int(input('Would you like this ace to be worth 1 or 11? --> '))
-                    if j == 1 or j == 11:
+                    j = input('Would you like this ace to be worth 1 or 11? --> ')
+                    if j == '1' or j == '11':
                         break
                     else:
                         print('Sorry try again.')
                 self.rem[10] = self.rem[9] - 1
                 self.rem[0] = self.rem[0] - 1
-                return j
+                return int(j)
             if p == 'computer':
                 dif = 21 - self.cvalue
                 if dif >= 11:
