@@ -4,6 +4,7 @@ Date: December 13, 2018
 '''
 
 import random
+from tkinter import *
 
 class card:
     def __init__(self, suit, number):
@@ -29,7 +30,7 @@ class game:
 
 
 class player:
-    def __init__(self, name, t='p', g):
+    def __init__(self, name, t, g):
         self.name = name
         self.type = t
         # game player is a part of
@@ -51,13 +52,40 @@ class player:
                 return card
 
     def getValue(self, card):
-        
+        pass
 
     # defines actions to be taken upon each turn
     def turn(self):
         pass
 
 
-class gui:
-    def __init__(self):
-        pass
+class Application(Frame):
+    def hit(self):
+        print('Hit')
+
+    def stay(self):
+        print('Stay')
+    
+    def createWidgets(self):
+        self.h = Button(self)
+        self.h["text"] = "Hit"
+        self.h["command"] = self.hit
+
+        self.h.pack({"side": "left"})
+
+        self.s = Button(self)
+        self.s["text"] = "Stay",
+        self.s["command"] = self.stay
+
+        self.s.pack({"side": "left"})
+
+    def __init__(self, master=None):
+        Frame.__init__(self, master)
+        self.pack()
+        self.createWidgets()
+
+
+root = Tk()
+app = Application(master=root)
+app.mainloop()
+root.destroy()
